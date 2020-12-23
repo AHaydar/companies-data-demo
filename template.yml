@@ -1,0 +1,21 @@
+Resources:
+  CompaniesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: companies
+      AttributeDefinitions:
+        - AttributeName: CompanyId
+          AttributeType: S
+        - AttributeName: Type
+          AttributeType: S
+      KeySchema:
+        - AttributeName: CompanyId
+          KeyType: HASH
+        - AttributeName: Type
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      Tags:
+        - Key: author
+          Value: ali
