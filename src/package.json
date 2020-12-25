@@ -1,0 +1,12 @@
+{
+  "name": "companies-data-demo",
+  "version": "1.0.0",
+  "description": "the data of public companies from dynamo db",
+  "main": "app.js",
+  "repository": "https://github.com/AHaydar/companies-data-demo",
+  "author": "Ali Haydar",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.0.0"
+  }
+}

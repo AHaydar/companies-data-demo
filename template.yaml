@@ -1,0 +1,84 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  companies-data-demo
+
+  Sample SAM Template for companies-data-demo
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  CompaniesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: companies
+      AttributeDefinitions:
+        - AttributeName: CompanyId
+          AttributeType: S
+        - AttributeName: CompanyType
+          AttributeType: S
+      KeySchema:
+        - AttributeName: CompanyId
+          KeyType: HASH
+        - AttributeName: CompanyType
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      Tags:
+        - Key: author
+          Value: ali
+
+  CompaniesTableReadOnlyAccessPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Policy for Read only companies table
+      ManagedPolicyName: companies-readonly-access
+      Path: /
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: CompaniesReadOnlyAccess
+            Effect: Allow
+            Action:
+              - 'dynamodb:Scan'
+              - 'dynamodb:GetItem'
+              - 'dynamodb:Query'
+            Resource:
+              - !GetAtt CompaniesTable.Arn
+
+  CompaniesFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: Role to allow the lambda to access the companies table
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      RoleName: companies-function-role
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSLambdaExecute
+        - !Ref CompaniesTableReadOnlyAccessPolicy
+
+  CompaniesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: companies-data-demo
+      CodeUri: src/
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Role: !GetAtt CompaniesFunctionRole.Arn
+      Events:
+        Companies:
+          Type: Api
+          Properties:
+            Path: /companies
+            Method: get
