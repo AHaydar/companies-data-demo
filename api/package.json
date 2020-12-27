@@ -6,6 +6,9 @@
   "repository": "https://github.com/AHaydar/companies-data-demo",
   "author": "Ali Haydar",
   "license": "MIT",
+  "scripts": {
+    "deploy": "sam build --manifest ./package.json && sam deploy --capabilities CAPABILITY_NAMED_IAM"
+  },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.0.0"
   }
