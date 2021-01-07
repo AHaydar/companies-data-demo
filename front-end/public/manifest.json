@@ -1,0 +1,8 @@
+{
+  "short_name": "Companies Data Demo",
+  "name": "Simple app that returns data of fake companies to demo a security vulnerability",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

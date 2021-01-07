@@ -130,4 +130,19 @@ $RECYCLE.BIN/
 samconfig.toml
 
 
-# End of https://www.gitignore.io/api/osx,node,linux,windows
+# dependencies
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.vscode/

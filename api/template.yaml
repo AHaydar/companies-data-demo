@@ -68,6 +68,15 @@ Resources:
         - arn:aws:iam::aws:policy/AWSLambdaExecute
         - !Ref CompaniesTableReadOnlyAccessPolicy
 
+  CompaniesApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Cors:
+        AllowMethods: "'GET,OPTIONS'"
+        AllowHeaders: "'content-type'"
+        AllowOrigin: "'*'"
+      StageName: Prod
+
   CompaniesFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -81,4 +90,9 @@ Resources:
           Type: Api
           Properties:
             Path: /companies
-            Method: get
+            Method: GET
+            RequestParameters:
+              - method.request.querystring.companyId:
+                  Required: false
+                  Caching: false
+            RestApiId: !Ref CompaniesApi

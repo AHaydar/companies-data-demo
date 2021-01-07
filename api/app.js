@@ -1,4 +1,5 @@
 const { DynamoDB } = require('@aws-sdk/client-dynamodb');
+const { unmarshall } = require('@aws-sdk/util-dynamodb');
 
 exports.lambdaHandler = async (event, context) => {
   try {
@@ -16,6 +17,7 @@ exports.lambdaHandler = async (event, context) => {
       };
       params.FilterExpression = 'CompanyType = :companyType';
     } else {
+      console.log('did I get here?', event.queryStringParameters);
       params.ExpressionAttributeValues = {
         ':companyId': {
           S: `COMPANY#${event.queryStringParameters.companyId}`,
@@ -25,9 +27,21 @@ exports.lambdaHandler = async (event, context) => {
     }
 
     const results = await dynamodb.scan(params);
+    console.log('results', results);
+    let unmarshalledResults = [];
+    for (const item of results.Items) {
+      const unmarshalledRecord = unmarshall(item);
+      unmarshalledResults.push(unmarshalledRecord);
+    }
+
+    console.log('unmarshalled results', unmarshalledResults);
     return {
       statusCode: 200,
-      body: JSON.stringify(results),
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: JSON.stringify(unmarshalledResults),
     };
   } catch (e) {
     console.error('something went wrong', e);
