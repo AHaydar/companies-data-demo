@@ -21,6 +21,8 @@ This is the set of tech used:
 
 The app we're building will retrieve a list of companies from a dynamo db and display them on the UI; selecting a company will show its revenue. Note that only companies flagged with "public" in the DB will be displayed on the UI. No details about private companies will be visible.
 
+Please check this [link](https://companies-data-demo.s3.amazonaws.com/index.html) if you'd like to take a gander at the demo web application before reading the step - Please ignore the styling as it's not part of this post.
+
 Let us begin with the implementation step by step. The architecture of our app is pretty simple and looks like this: 
 ![](architecture.png)
 
@@ -445,5 +447,7 @@ Notice the following:
 Please excuse the UI and the style as I did not spend much time or effort on this part.
 
 What are the security vulnerabilities? or any other vulnerabilities? How can we solve them?
+
+The full source code can be found at: https://github.com/AHaydar/companies-data-demo
 
 Thanks for reading.
