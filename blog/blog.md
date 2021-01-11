@@ -1,21 +1,18 @@
 # Is your web app secure enough?
 
-Last month, I've got the chance to evaluate the Secure development training programme provided at https://academy.safestack.io/, I ended up completing it. It's a pretty good programme that I would highly recommend for all developers.
+** The views in this post are my own and do NOT represent or reflect the views of my employer or any organisations **
+In this post we will build an insecure web application. The goal is to share some of my learnings building AWS serverless apps. At the same time, I am hoping this would start a discussion that increases the awareness around security when architecting or developing software.
+This came to mind as I went through the “Secure development training” programme at https://academy.safestack.io/ lately, so thought that could be an opportunity to introduce a couple of security vulnerabilities as part of the app, leaving it to the reader to identify them and suggest fixes. Hopefully this would be a fun exercise.
+Below is the stack used:
+CloudFormation
+AWS lambda
+AWS API Gateway
+DynamoDB
+React JS
+Node JS
 
-Other than the awesome "Security Fundamentals" course in this program, which covers vulnerability & risk, threat actors & motivations, and explains why security matters, there is the more technical "Finding and Fixing Web Application Security Vulnerabilities" course that has some pretty cool explanations and labs on how to secure web apps. As my words can't do justice to this programme, I would encourage you to give it a try. Oh, and there's also a new "Threat assessment" course that got added lately.
-
-The learnings in that programme encouraged me to write this blog post, where we will build an insecure simple API and web application. Then will leave it for the reader to indentify the vulnerabilities and suggest fixes.
-
-As I'm excited these days about AWS serverless services, I will also utilize this post to share a bit of my learnings through a step by step guide on how to build the web app (there's some kind of a hint in the steps about the security issues).
-
-This is the set of tech used:
-
-- CloudFormation - to build infrastructure as code
-- AWS lambda - to build the logic that's going to return the data from the db
-- AWS API Gateway - the endpoint that requests the data from the lambda function
-- DynamoDB - the data store
-- React JS - the front end will use this tech
-- Node JS - the lambda function will use Node JS
+Before we start, here is a quick view about the programme:
+Other than the awesome “Security Fundamentals” course, which covers vulnerability & risk, threat actors & motivations, and explains why security matters, there is the more technical “Finding and Fixing Web Application Security Vulnerabilities” course that has some pretty cool explanations and labs on how to secure web apps. As my words can’t do justice to this programme, I would encourage you to give it a try. Oh, and there’s also a new “Threat assessment” course that got added lately. Overall, I highly recommend these courses for all development teams.
 
 ### What are we building?
 
