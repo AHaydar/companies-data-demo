@@ -1,15 +1,17 @@
 # Is your web app secure enough?
 
 ** The views in this post are my own and do NOT represent or reflect the views of my employer or any organisations **
+
 In this post we will build an insecure web application. The goal is to share some of my learnings building AWS serverless apps. At the same time, I am hoping this would start a discussion that increases the awareness around security when architecting or developing software.
+
 This came to mind as I went through the “Secure development training” programme at https://academy.safestack.io/ lately, so thought that could be an opportunity to introduce a couple of security vulnerabilities as part of the app, leaving it to the reader to identify them and suggest fixes. Hopefully this would be a fun exercise.
 Below is the stack used:
-CloudFormation
-AWS lambda
-AWS API Gateway
-DynamoDB
-React JS
-Node JS
+* CloudFormation
+* AWS lambda
+* AWS API Gateway
+* DynamoDB
+* React JS
+* Node JS
 
 Before we start, here is a quick view about the programme:
 Other than the awesome “Security Fundamentals” course, which covers vulnerability & risk, threat actors & motivations, and explains why security matters, there is the more technical “Finding and Fixing Web Application Security Vulnerabilities” course that has some pretty cool explanations and labs on how to secure web apps. As my words can’t do justice to this programme, I would encourage you to give it a try. Oh, and there’s also a new “Threat assessment” course that got added lately. Overall, I highly recommend these courses for all development teams.
