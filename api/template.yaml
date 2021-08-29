@@ -26,8 +26,8 @@ Resources:
         - AttributeName: CompanyType
           KeyType: RANGE
       ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
       Tags:
         - Key: author
           Value: ali
@@ -81,7 +81,6 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: companies-data-demo
-      CodeUri: src/
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
       Role: !GetAtt CompaniesFunctionRole.Arn
@@ -96,3 +95,65 @@ Resources:
                   Required: false
                   Caching: false
             RestApiId: !Ref CompaniesApi
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Type: AllAtOnce
+        Hooks:
+          PreTraffic: !Ref CompaniesPreTrafficHookFunction
+          PostTraffic: !Ref CompaniesPostTrafficHookFunction
+
+  CompaniesPreTrafficHookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: CodeDeployHook_PreTrafficLambda
+      Handler: BeforeAllowTestTraffic.handler
+      Runtime: nodejs12.x
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+          - Effect: "Allow"
+            Action:
+              - "codedeploy:PutLifecycleEventHookExecutionStatus"
+            Resource:
+              !Sub 'arn:${AWS::Partition}:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentgroup:${ServerlessDeploymentApplication}/*'
+        - Version: "2012-10-17"
+          Statement:
+          - Effect: "Allow"
+            Action:
+              - "lambda:InvokeAsync"
+              - "lambda:InvokeFunction"
+            Resource:  ["*"]
+      DeploymentPreference:
+        Enabled: False
+        Role: ""
+      Environment:
+        Variables:
+          NewVersion: !Ref CompaniesFunction.Version
+
+  CompaniesPostTrafficHookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: CodeDeployHook_PostTrafficLambda
+      Handler: AfterAllowTestTraffic.handler
+      Runtime: nodejs12.x
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+          - Effect: "Allow"
+            Action:
+              - "codedeploy:PutLifecycleEventHookExecutionStatus"
+            Resource:
+              !Sub 'arn:${AWS::Partition}:codedeploy:${AWS::Region}:${AWS::AccountId}:deploymentgroup:${ServerlessDeploymentApplication}/*'
+        - Version: "2012-10-17"
+          Statement:
+          - Effect: "Allow"
+            Action:
+              - "lambda:InvokeAsync"
+              - "lambda:InvokeFunction"
+            Resource:  ["*"]
+      DeploymentPreference:
+        Enabled: False
+        Role: ""
+      Environment:
+        Variables:
+          NewVersion: !Ref CompaniesFunction.Version
